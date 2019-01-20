@@ -1,0 +1,9 @@
+{
+  "db":{
+    "host": "localhost:27017",
+    "name": "moviesDB"
+  },
+  "server":{
+    "port":7000
+  }
+}

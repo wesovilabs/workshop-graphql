@@ -1,0 +1,41 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:3.6.1
+    container_name: uv-mongodb
+    volumes:
+      - mongodb:/data/db
+      - mongodb_config:/data/configdb
+    ports:
+        - 27024:27017
+    command: mongod
+
+  code:
+    build:
+      context: .
+    ports:
+      - 7000:7000
+    depends_on:
+      - mongodb
+    volumes:
+      - ./:/usr/src/app
+      - ./config/development.json:/opt/config/development.json
+    environment:
+      APP_CONFIG_DIR: /opt/config
+    command: npm run dev
+
+  app:
+    image: wesovilabs/graphql-movies:local
+    ports:
+      - 7000:7000
+    depends_on:
+      - mongodb
+    environment:
+      APP_CONFIG_DIR: /opt/config
+    volumes:
+      - ./config/development.json:/opt/config/development.json
+    command: npm start
+
+volumes:
+  mongodb:
+  mongodb_config:

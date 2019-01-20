@@ -1,0 +1,117 @@
+# This is a GraphQL Schema for an API to manage movies
+
+"""Type of movie"""
+enum Genre{
+  Drama
+  Comedia
+  SciFi
+  Horror
+}
+
+"""Scalar type used to define years"""
+scalar Year
+"""Scalar type used to define Url's"""
+scalar Url
+
+# This interface contains common attributes for people
+"""Interface with common fields for people"""
+interface Person {
+  "Unique identifier"
+  id:ID!
+  "Name of person"
+  name:String!
+  "Is a male?"
+  male:Boolean
+}
+"""Type used to define actors"""
+type Actor implements Person{
+  "Unique identifier"
+  id:ID!
+  "Name of actor"
+  name:String!
+  "Is a male?"
+  male:Boolean
+  "Url to profile of actor"
+  profileUrl:Url
+}
+
+"""Type for characters"""
+type Character {
+  "who's the actor"
+  actor: Actor!
+  "name of character"
+  name:String!
+}
+
+"""Type used to define directors"""
+type Director implements Person{
+  "Unique identifier"
+  id:ID!
+  "Name of actor"
+  name:String!
+  "Is a male?"
+  male:Boolean
+}
+"""Type with details for movies"""
+type Movie{
+  "Unique identifier"
+  id:ID!
+  #The agument in the field gives us the chance to obtain the name of the movie in the different countries
+  "Title of movie"
+  title(country:String="Spain"):String!
+  "Year when the movie was released"
+  year:Year
+  "Genre of the movie"
+  genre:Genre
+  "Director of the movie"
+  director: Director!
+  "Characters in the movie"
+  characters:[Character!]!
+  "Audience of the movie"
+  audience:Int
+  "Box-office of the movie"
+  boxOffice:Float
+}
+
+union Items=Actor | Director | Movie
+type Query {
+  listMovies:[Movie!]
+  listMoviesInYear(year:Year=2018):[Movie!]
+  listPeople:[Person!]
+  listItems:[Items!]
+  listTopBoxOfficeMovies:[Movie!]
+  getMovie(id: ID!, country:String):Movie!
+}
+
+input CreateMovieRequest {
+  title:String!
+  year:Year
+  genre:Genre
+  director: ID!
+  audience:Int
+  boxOffice:Float
+}
+input CreateDirectorRequest {
+  name:String!
+  male:Boolean
+}
+
+input CreateActorRequest {
+  name:String!
+  male:Boolean
+  profileUrl:Url
+}
+input AddCharacterToMovieRequest{
+  actor:ID!
+  movie:ID!
+  name:String
+}
+
+type Mutation {
+  addMovie(input:CreateMovieRequest!):Movie
+  addActor(input:CreateActorRequest!):Actor
+  addDirector(input:CreateDirectorRequest!):Director
+  addCharacter(input:AddCharacterToMovieRequest):Movie!
+  setMovieBoxOffice(id:ID!,boxOffice:Float):Movie!
+  deleteMovie(id:ID!):[Movie!]
+}
