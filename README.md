@@ -113,7 +113,7 @@ To interact with API you could things like these
  }
  ```
 
- and once we have records into the database will be able to consume them.
+ and once there're records in the database, we will be able to consume them.
 
 ```graphql
 query {
