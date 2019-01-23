@@ -25,3 +25,8 @@ entities are:
  ```
 
  This Makefile target will run the docker-compose in the repository root.
+
+ The application will be running on http://localhost:7000
+
+ The app container is run with nodemon so you can make changes in code and these
+ will be automatically 'deployed'.
