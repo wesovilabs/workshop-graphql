@@ -18,9 +18,6 @@ const listItems = (parentValue, args, ctx) =>{
   return [];
 };
 const getMeeting = (parentValue, args, ctx) => {
-  console.log(parentValue);
-  console.log(args);
-  console.log(ctx);
   return mongo.getMeeting(args.meetingId).then((meeting)=>{
     return mongoMeetingToModel(meeting);
   });
