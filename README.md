@@ -17,7 +17,7 @@ entities are:
  ## Running locally
 
  It's a nodeJS that provides a GraphQL API implemented with `koa` and `apollo`.
- On the datastore side, the application make uses of `mongoose` to establish connection with mongo.
+ On the datastore side, the application makes use of `mongoose` to establish connection with mongo.
 
  To avoid run a mongodb locally you can just perform the below command.
  ```
