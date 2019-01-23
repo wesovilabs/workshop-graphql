@@ -4,8 +4,8 @@ const { importSchema } = require('graphql-import');
 
 const fs = require('fs');
 const path = require('path');
-const query = require('./query')
-const mutation = require('./mutation')
+const query = require('./resolvers/query')
+const mutation = require('./resolvers/mutation')
 const db = require('./service/db');
 const config = require('./config.js');
 
@@ -13,9 +13,22 @@ require('dotenv').config();
 const app = new Koa();
 const typeDefs = importSchema('./schema.graphql');
 const resolvers = {
+  Person: {
+    __resolveType(obj, context, info){
+      if(obj.company){
+        return 'ExternalWorker';
+      }
+      return 'Employee';
+    },
+  },
+  Employee: {
+    salary: ({ salary }, { currency }) => currency === 'Euro' ? salary : salary * 1.14
+  },
   Query: query,
   Mutation: mutation,
 };
+
+
 const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
@@ -25,13 +38,7 @@ const schema = makeExecutableSchema({
 const server = new ApolloServer({
   schema,
 })
-/**
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  resolverValidationOptions: { requireResolversForResolveType: false },
-});
-**/
+
 server.applyMiddleware({ app });
 db.connect()
 app.listen({ port: config.get('server.port') }, () =>

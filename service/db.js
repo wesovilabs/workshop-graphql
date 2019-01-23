@@ -13,6 +13,7 @@ module.exports = {
 
 async function connect() {
     try {
+        console.log(dbUrl);
         let ret = await mongoose.connect(dbUrl, {
             useNewUrlParser: true
         })

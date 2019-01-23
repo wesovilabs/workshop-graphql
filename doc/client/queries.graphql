@@ -1,0 +1,30 @@
+query {
+   getMeeting(meetingId:"meeting001"){
+    id
+    organizer{
+      identifier
+      firstname
+      lastname
+      email
+      salary(currency:Euro)
+    }
+    room{
+      capacity
+    }
+    invitations {
+      accepted
+      person{
+        firstname
+        lastname
+        email
+        ... on Employee {
+          identifier
+          salary
+        }
+        ... on ExternalWorker {
+          company
+        }
+      }
+    }
+  }
+}

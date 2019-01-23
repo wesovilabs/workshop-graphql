@@ -14,7 +14,9 @@
     "graphql": "^14.1.0",
     "graphql-import": "^0.7.1",
     "koa": "^2.6.2",
-    "mongoose": "^5.4.4"
+    "mongoose": "^5.4.4",
+    "prisma": "^1.24.0",
+    "prisma-client-lib": "^1.24.0"
   },
   "devDependencies": {
     "eslint": "^5.12.0",

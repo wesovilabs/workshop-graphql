@@ -1,0 +1,59 @@
+type Meeting {
+  id:ID!
+  subject:String!
+  type:MeetingType
+  cancelled:Boolean!
+  room:Room
+  conferenceLink:Url
+  when:Datetime!
+  organizer:Employee
+  invitations:[MeetingInvitation!]
+}
+
+type MeetingInvitation {
+  person:Person!
+  accepted:Boolean
+}
+
+interface Person {
+  firsname:String
+  lastname:String
+  email:Email!
+}
+
+enum Currency{
+  Euro
+  Dollar
+}
+type Employee implements Person{
+  identifier:ID!
+  firsname:String
+  lastname:String
+  email:Email!
+  salary(currency:Currency=Euro):Float
+}
+
+type ExternalWorker implements Person {
+  firsname:String
+  lastname:String
+  email:Email!
+  company:String
+}
+
+scalar Email
+
+scalar Datetime
+scalar Url
+
+
+type Room {
+  id:ID!
+  capacity:Int
+}
+
+enum MeetingType {
+  decissionMaking
+  brainstorming
+  planning
+  oneToOne
+}

@@ -1,7 +1,7 @@
 {
   "db":{
     "host": "localhost:27017",
-    "name": "moviesDB"
+    "name": "meetings"
   },
   "server":{
     "port":7000

@@ -1,0 +1,103 @@
+# This schema is used for wokshop
+
+"""Custom scalar type for emails"""
+scalar Email
+"""Custom scalar type for date times"""
+scalar Datetime
+"""This scalar type is used for Url's"""
+scalar Url
+
+# In the future we could add new currencies if required
+"""Type of currency"""
+enum Currency{
+  "Euro"
+  Euro
+  "Dollar"
+  Dollar
+}
+
+"""Type of meetings"""
+enum MeetingType {
+  "Decission making meeting"
+  decissionMaking
+  "Brainstorming meeting"
+  brainstorming
+  "Planning meeting"
+  planning
+  "One to one meeting"
+  oneToOne
+}
+
+"""It contains details for a meeting"""
+type Meeting {
+  "Unique identifier for each room"
+  id:ID!
+  "Subject of meeting"
+  subject:String!
+  "Type of meeting"
+  type:MeetingType
+  "True if meeting has been cancelled"
+  cancelled:Boolean!
+  "Room where meeting will take place"
+  room:Room
+  "Web conference link for online assistants"
+  conferenceLink:Url
+  "When the meeting will take place"
+  when:Datetime!
+	"Organizer of the meeting"
+  organizer:Employee
+  "List of invitations"
+  invitations:[MeetingInvitation!]
+}
+
+"""It contains details for meeting rooms"""
+type Room {
+  "Unique identifier for each room"
+  id:ID!
+  "Max number of people per room"
+  capacity:Int #Usefull information for choice the mos suitable room
+}
+
+"""Invitation for people"""
+type MeetingInvitation {
+  "Invited person to the meeting"
+  person:Person!
+  "True if person confirmed assistance"
+  accepted:Boolean
+}
+
+"""Interface with common fields for any person"""
+interface Person {
+  "Firstname of the person"
+  firstname:String
+  "Lastname of the person"
+  lastname:String
+  "Email of the person"
+  email:Email!
+}
+
+"""It contains fields for employee and the inheritared from Interface Person"""
+type Employee implements Person{
+   "Unique identifier for each employee"
+  identifier:ID!
+  "Firstname of the employee"
+  firstname:String
+  "Lastname of the employee"
+  lastname:String
+  "Email of the employee"
+  email:Email!
+  "Salary of employee that can be asked in Euro or Dollar"
+  salary(currency:Currency=Euro):Float # By default is Euro
+}
+
+"""It contains fields for external workers and the inheritared from Interface Person"""
+type ExternalWorker implements Person {
+ "Firstname of the external worker"
+  firstname:String
+  "Lastname of the external worker"
+  lastname:String
+  "Email of the external worker"
+  email:Email!
+  "Name of company of the external worker"
+  company:String
+}
